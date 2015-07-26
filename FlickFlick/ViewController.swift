@@ -8,31 +8,50 @@
 
 import UIKit
 
+extension UISwipeGestureRecognizerDirection: Hashable {
+    public var hashValue: Int {
+        return self.rawValue.hashValue
+    }
+}
+
 class ViewController: UIViewController {
     
-    @IBOutlet weak var arrowsLabel: UILabel!
+    @IBOutlet private weak var arrowsLabel: UILabel!
     
     // key : UISwipeGestureRecognizerDirection.rawValue
-    let dic: [UInt: String] = [1: "→", 2: "←", 4: "↑", 8: "↓"]
+    private let dic: [UInt: String] = [1: "→", 2: "←", 4: "↑", 8: "↓"]
+    // key : UISwipeGestureRecognizerDirection
+    private let dic2: [UISwipeGestureRecognizerDirection: String] = [.Right: "→", .Left: "←", .Up: "↑", .Down: "↓"]
     
-    var directions = [String]()
+    private var directions = [String]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
     
-        for i in [UInt](dic.keys) {
+//        for i in [UInt](dic.keys) {
+//            let swipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: "didSwipe:")
+//            let direction = UISwipeGestureRecognizerDirection(i)
+//            swipeGestureRecognizer.direction = direction
+//            view.addGestureRecognizer(swipeGestureRecognizer)
+//        }
+        
+        for dir in [UISwipeGestureRecognizerDirection](dic2.keys) {
             let swipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: "didSwipe:")
-            let direction = UISwipeGestureRecognizerDirection(i)
-            swipeGestureRecognizer.direction = direction
+            swipeGestureRecognizer.direction = dir
             view.addGestureRecognizer(swipeGestureRecognizer)
         }
         
         newGame()
     }
 
-    func didSwipe(sender: UISwipeGestureRecognizer) {
-        if dic[sender.direction.rawValue] == directions.first! {
+    func didSwipe(sender: UISwipeGestureRecognizer) { // private
+//        if dic[sender.direction.rawValue] == directions.first! {
+//            directions.removeAtIndex(0)
+//            arrowsLabel.text = makeSimpleStringFromArray(directions)
+////            arrowsLabel.attributedText = makeHighlightedStringFromArray(directions)
+//        }
+        if dic2[sender.direction] == directions.first! {
             directions.removeAtIndex(0)
             arrowsLabel.text = makeSimpleStringFromArray(directions)
 //            arrowsLabel.attributedText = makeHighlightedStringFromArray(directions)
@@ -43,9 +62,15 @@ class ViewController: UIViewController {
         }
     }
     
-    func produceArrayCombination() -> [String] {
+    private func produceArrayCombination() -> [String] {
+//        var dirs = [String]()
+//        let arrows = [String](dic.values)
+//        for _ in 0 ..< 4 {
+//            dirs.append(arrows[Int(arc4random_uniform(UInt32(4)))])
+//        }
+//        return dirs
         var dirs = [String]()
-        let arrows = [String](dic.values)
+        let arrows = [String](dic2.values)
         for _ in 0 ..< 4 {
             dirs.append(arrows[Int(arc4random_uniform(UInt32(4)))])
         }
@@ -53,12 +78,12 @@ class ViewController: UIViewController {
     }
     
     // ["→", "←", "↑", "↑"] -> "→←↑↑"
-    func makeSimpleStringFromArray(array: [String]) -> String {
+    private func makeSimpleStringFromArray(array: [String]) -> String {
         return "".join(array)
     }
     
     // show combination and highlight the target(first) arrow
-    func makeHighlightedStringFromArray(array: [String]) -> NSAttributedString {
+    private func makeHighlightedStringFromArray(array: [String]) -> NSAttributedString {
         var labelText = NSMutableAttributedString()
         
         for i in 0 ..< array.count {
@@ -75,7 +100,7 @@ class ViewController: UIViewController {
         return labelText
     }
     
-    func newGame() {
+    private func newGame() {
         directions = produceArrayCombination()
         arrowsLabel.text = makeSimpleStringFromArray(directions)
 //        arrowsLabel.attributedText = makeHighlightedStringFromArray(directions)
