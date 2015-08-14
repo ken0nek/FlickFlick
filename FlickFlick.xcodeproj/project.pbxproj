@@ -156,6 +156,7 @@
 		E9937F2E1B5FD7F100087090 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0640;
 				ORGANIZATIONNAME = ken0nek;
 				TargetAttributes = {
@@ -409,6 +410,7 @@
 				E9937F571B5FD7F100087090 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E9937F581B5FD7F100087090 /* Build configuration list for PBXNativeTarget "FlickFlickTests" */ = {
 			isa = XCConfigurationList;
@@ -417,6 +419,7 @@
 				E9937F5A1B5FD7F100087090 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
