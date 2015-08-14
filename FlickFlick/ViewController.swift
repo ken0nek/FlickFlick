@@ -19,7 +19,7 @@ class ViewController: UIViewController {
     @IBOutlet private weak var arrowsLabel: UILabel!
     
     // key : UISwipeGestureRecognizerDirection.rawValue
-    private let dic: [UInt: String] = [1: "→", 2: "←", 4: "↑", 8: "↓"]
+//    private let dic: [UInt: String] = [1: "→", 2: "←", 4: "↑", 8: "↓"]
     // key : UISwipeGestureRecognizerDirection
     private let dic2: [UISwipeGestureRecognizerDirection: String] = [.Right: "→", .Left: "←", .Up: "↑", .Down: "↓"]
     
@@ -57,7 +57,7 @@ class ViewController: UIViewController {
 //            arrowsLabel.attributedText = makeHighlightedStringFromArray(directions)
         }
         
-        if directions.count == 0 {
+        if directions.isEmpty {
             newGame()
         }
     }
@@ -69,12 +69,14 @@ class ViewController: UIViewController {
 //            dirs.append(arrows[Int(arc4random_uniform(UInt32(4)))])
 //        }
 //        return dirs
-        var dirs = [String]()
         let arrows = [String](dic2.values)
-        for _ in 0 ..< 4 {
-            dirs.append(arrows[Int(arc4random_uniform(UInt32(4)))])
-        }
-        return dirs
+        return Array(0..<4).map{_ in arrows[Int(arc4random_uniform(UInt32(4)))]}
+//        var dirs = [String]()
+//        let arrows = [String](dic2.values)
+//        for _ in 0 ..< 4 {
+//            dirs.append(arrows[Int(arc4random_uniform(UInt32(4)))])
+//        }
+//        return dirs
     }
     
     // ["→", "←", "↑", "↑"] -> "→←↑↑"
@@ -83,15 +85,16 @@ class ViewController: UIViewController {
     }
     
     // show combination and highlight the target(first) arrow
-    private func makeHighlightedStringFromArray(array: [String]) -> NSAttributedString {
+    private func makeHighlightedStringFromArray(array: [String]) -> NSMutableAttributedString {
         var labelText = NSMutableAttributedString()
         
-        for i in 0 ..< array.count {
+        for i in 0..<array.count {
             
-            let attributedString = NSMutableAttributedString(string: array[i])
-            
-            if i == 0 { // make target number red color
-                attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor.redColor(), range: NSMakeRange(0, 1))
+            let attributedString: NSAttributedString
+            if i == 0 {
+                attributedString = NSAttributedString(string: "\(array[i])", attributes: [NSForegroundColorAttributeName: UIColor.redColor()])
+            } else {
+                attributedString = NSAttributedString(string: "\(array[i])")
             }
             
             labelText.appendAttributedString(attributedString)
