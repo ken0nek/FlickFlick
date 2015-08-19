@@ -95,9 +95,9 @@ class ViewController: UIViewController {
 //        return attributedString
         let attributedStrings = array.enumerate().map { (i, ele) -> NSAttributedString in
             if i == 0 {
-                return NSAttributedString(string: String(ele), attributes: [NSForegroundColorAttributeName: UIColor.redColor()])
+                return NSAttributedString(string: ele, attributes: [NSForegroundColorAttributeName: UIColor.redColor()])
             } else {
-                return NSAttributedString(string: String(ele))
+                return NSAttributedString(string: ele)
             }
         }
         
