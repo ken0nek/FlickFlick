@@ -86,13 +86,25 @@ class ViewController: UIViewController {
     
     // show combination and highlight the target(first) arrow
     private func makeHighlightedStringFromArray(array: [String]) -> NSMutableAttributedString {
-        if array.isEmpty {
-            return NSMutableAttributedString(string: "")
+//        if array.isEmpty {
+//            return NSMutableAttributedString(string: "")
+//        }
+//        
+//        let attributedString = NSMutableAttributedString(string: "".join(array.map{"\($0)"}))
+//        attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor.redColor(), range: NSMakeRange(0, 1))
+//        return attributedString
+        let attributedStrings = array.enumerate().map { (i, ele) -> NSAttributedString in
+            if i == 0 {
+                return NSAttributedString(string: String(ele), attributes: [NSForegroundColorAttributeName: UIColor.redColor()])
+            } else {
+                return NSAttributedString(string: String(ele))
+            }
         }
         
-        let attributedString = NSMutableAttributedString(string: "".join(array.map{"\($0)"}))
-        attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor.redColor(), range: NSMakeRange(0, 1))
-        return attributedString
+        return attributedStrings.reduce(NSMutableAttributedString(string: "")) { (sum, now) -> NSMutableAttributedString in
+            sum.appendAttributedString(now)
+            return sum
+        }
     }
     
     private func newGame() {
