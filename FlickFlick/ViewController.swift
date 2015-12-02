@@ -49,9 +49,9 @@ class ViewController: UIViewController {
     }
     
     private func produceArrayCombination() -> [String] {
-
+        
         let arrows = [String](dic.values)
-        return Array(0..<4).map{_ in arrows[Int(arc4random_uniform(UInt32(4)))]}
+        return Array(0 ..< 4).map {_ in arrows[Int(arc4random_uniform(UInt32(4)))]}
     }
     
     // ["→", "←", "↑", "↑"] -> "→←↑↑"
