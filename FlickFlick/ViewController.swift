@@ -14,11 +14,11 @@ extension UISwipeGestureRecognizerDirection: Hashable {
     }
 }
 
-class ViewController: UIViewController {
+final class ViewController: UIViewController {
     
     @IBOutlet private weak var arrowsLabel: UILabel!
     
-    private let dic: [UISwipeGestureRecognizerDirection: String] = [.Right: "→", .Left: "←", .Up: "↑", .Down: "↓"]
+    private let dic: [UISwipeGestureRecognizerDirection: String] = [.right: "→", .left: "←", .up: "↑", .down: "↓"]
     
     private var directions = [String]()
     
@@ -27,7 +27,7 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
         
         for dir in [UISwipeGestureRecognizerDirection](dic.keys) {
-            let swipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: "didSwipe:")
+            let swipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(ViewController.didSwipe(_:)))
             swipeGestureRecognizer.direction = dir
             view.addGestureRecognizer(swipeGestureRecognizer)
         }
@@ -35,11 +35,10 @@ class ViewController: UIViewController {
         newGame()
     }
     
-    func didSwipe(sender: UISwipeGestureRecognizer) { // private
+    func didSwipe(_ sender: UISwipeGestureRecognizer) { // private
 
         if dic[sender.direction] == directions.first! {
-            directions.removeAtIndex(0)
-//            arrowsLabel.text = makeSimpleStringFromArray(directions)
+            directions.remove(at: 0)
             arrowsLabel.attributedText = makeHighlightedStringFromArray(directions)
         }
         
@@ -51,27 +50,27 @@ class ViewController: UIViewController {
     private func produceArrayCombination() -> [String] {
         
         let arrows = [String](dic.values)
-        return Array(0 ..< 4).map {_ in arrows[Int(arc4random_uniform(UInt32(4)))]}
+        return (0 ..< 4).map {_ in arrows[Int(arc4random_uniform(UInt32(4)))]}
     }
     
     // ["→", "←", "↑", "↑"] -> "→←↑↑"
-    private func makeSimpleStringFromArray(array: [String]) -> String {
-        return array.joinWithSeparator("")
+    private func makeSimpleStringFromArray(_ array: [String]) -> String {
+        return array.joined(separator: "")
     }
     
     // show combination and highlight the target(first) arrow
-    private func makeHighlightedStringFromArray(array: [String]) -> NSMutableAttributedString {
+    private func makeHighlightedStringFromArray(_ array: [String]) -> NSMutableAttributedString {
 
-        let attributedStrings = array.enumerate().map { (i, ele) -> NSAttributedString in
+        let attributedStrings = array.enumerated().map { (i, ele) -> NSAttributedString in
             if i == 0 {
-                return NSAttributedString(string: ele, attributes: [NSForegroundColorAttributeName: UIColor.redColor()])
+                return NSAttributedString(string: ele, attributes: [NSForegroundColorAttributeName: UIColor.red])
             } else {
                 return NSAttributedString(string: ele)
             }
         }
         
         return attributedStrings.reduce(NSMutableAttributedString(string: "")) { (sum, now) -> NSMutableAttributedString in
-            sum.appendAttributedString(now)
+            sum.append(now)
             return sum
         }
     }
@@ -88,4 +87,3 @@ class ViewController: UIViewController {
     }
     
 }
-
